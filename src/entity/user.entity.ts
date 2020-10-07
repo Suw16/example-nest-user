@@ -8,17 +8,17 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class Users {
+export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar', length: 50 })
+  @Column({ type: 'varchar', length: 255 })
   username: string;
 
-  @Column({ type: 'varchar', length: 50 })
+  @Column({ type: 'varchar', length: 255, select: false })
   password: string;
 
-  @Column({ type: 'varchar', length: 50 })
+  @Column({ type: 'varchar', length: 100 })
   email: string;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
