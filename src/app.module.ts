@@ -6,7 +6,5 @@ import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [TypeOrmModule.forRoot(typeOrmConfig), UserModule, AuthModule],
-  controllers: [],
-  providers: [],
 })
 export class AppModule {}
