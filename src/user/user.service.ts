@@ -10,6 +10,7 @@ import { UserRepository } from './user.repository';
 import * as bcrypt from 'bcrypt';
 import { getConnection } from 'typeorm';
 import { promises } from 'dns';
+import { UserUpdateDto } from './dto/user-update.dto';
 
 @Injectable()
 export class UserService {
@@ -72,6 +73,26 @@ export class UserService {
     } catch (error) {
       console.log('error message ::', error.message);
       throw new NotFoundException({
+        success: false,
+        message: error.message,
+      });
+    }
+  }
+
+  async updatedUser(id: number, body: UserUpdateDto): Promise<User> {
+    try {
+      const { email } = body;
+
+      const findUser = await this.userRepository.findOne({
+        where: { id: id },
+      });
+
+      if (!findUser) throw new Error('not found user.');
+
+      return;
+    } catch (error) {
+      console.log('error message ::', error.message);
+      throw new BadRequestException({
         success: false,
         message: error.message,
       });
