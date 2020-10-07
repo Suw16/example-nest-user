@@ -24,8 +24,8 @@ export class UserService {
     return bcrypt.compare(password, hash);
   }
 
-  async findOne(username: string): Promise<undefined> {
-    return;
+  async findOne(username: string): Promise<User> {
+    return await this.userRepository.findOne({ where: { username: username } });
   }
 
   async createUser(body: UserCreateDto): Promise<any> {
@@ -64,7 +64,10 @@ export class UserService {
 
   async getUser(): Promise<User | User[]> {
     try {
-      const data = await this.userRepository.find();
+      const data = await this.userRepository.find({
+        select: ['id', 'username', 'email'],
+      });
+
       return data;
     } catch (error) {
       console.log('error message ::', error.message);
