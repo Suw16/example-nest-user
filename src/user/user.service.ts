@@ -79,7 +79,7 @@ export class UserService {
     }
   }
 
-  async updatedUser(id: number, body: UserUpdateDto): Promise<User> {
+  async updatedUser(id: number, body: UserUpdateDto): Promise<any> {
     try {
       const { email } = body;
 
@@ -89,7 +89,38 @@ export class UserService {
 
       if (!findUser) throw new Error('not found user.');
 
-      return;
+      const updatedUser = await getConnection()
+        .createQueryBuilder()
+        .update(User)
+        .set({
+          email: email,
+        })
+        .where('id = :id', { id: findUser.id })
+        .execute();
+
+      return {
+        success: true,
+        message: 'updated user success.',
+      };
+    } catch (error) {
+      console.log('error message ::', error.message);
+      throw new BadRequestException({
+        success: false,
+        message: error.message,
+      });
+    }
+  }
+
+  async getById(id: number): Promise<User> {
+    try {
+      const _user = await this.userRepository.findOne({
+        select: ['username', 'email'],
+        where: { id: id },
+      });
+
+      if (!_user) throw new Error('not found user.');
+
+      return _user;
     } catch (error) {
       console.log('error message ::', error.message);
       throw new BadRequestException({

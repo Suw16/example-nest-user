@@ -30,6 +30,16 @@ export class UserController {
     };
   }
 
+  @Get(':id')
+  async getByID(@Param('id', ParseIntPipe) id: number): Promise<any> {
+    const user = await this.userService.getById(id);
+
+    return {
+      success: true,
+      data: user,
+    };
+  }
+
   @Patch(':id')
   async updatedUser(
     @Param('id', ParseIntPipe) id: number,
